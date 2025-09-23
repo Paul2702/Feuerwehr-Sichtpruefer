@@ -2,11 +2,8 @@ resources/chrome/
 resources/wkhtmltopdf/
 assets/images/
 data/
-assets/Feuerwehr_Logo.png
-assets/pdf_Feuerwehr_Logo.png
 resources/uiResources_rc.py
 ui/ui_main.py
-config.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

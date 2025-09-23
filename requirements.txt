@@ -1,0 +1,4 @@
+PySide6
+reportlab
+bleach
+beautifulsoup4

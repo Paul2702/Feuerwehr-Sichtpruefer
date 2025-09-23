@@ -1,0 +1,4172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1368</width>
+    <height>885</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sichtprüfer</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/uiResources.qrc">
+    <normaloff>:/icons/assets/icons/Stauferlöwe.png</normaloff>:/icons/assets/icons/Stauferlöwe.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(28, 28, 28);</string>
+  </property>
+  <widget class="QWidget" name="fensteraufteilung">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(4, 13, 46);</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <layout class="QHBoxLayout" name="header">
+      <property name="spacing">
+       <number>62</number>
+      </property>
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="topMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <property name="bottomMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="feuerwehrLogo">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/uiResources.qrc">
+          <normaloff>:/img/assets/Feuerwehr_Logo.png</normaloff>:/img/assets/Feuerwehr_Logo.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>271</width>
+          <height>73</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="headerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="navigationsleiste">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="zurueck">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/Links.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/LinksOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="weiter">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/Rechts.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/RechtsOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="hinzufuegen">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/Plus.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/PlusOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="fertig">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/Haken.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/HakenOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="loeschen">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/Abfall.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/AbfallOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="abbrechen">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    image: url(:/icons/assets/icons/X.png);
+	width: 32;
+	height: 32;
+	border: none;
+	padding-left:6;
+	padding-right:6;
+	padding-top:8;
+	padding-bottom:8;
+}
+
+QPushButton:hover {
+	background-color: rgb(127, 127, 127);
+}
+
+QPushButton:pressed {
+}
+
+QPushButton:disabled {
+    image: url(:/icons/assets/icons/XOff.png);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="content">
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(37, 37, 37);</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="hauptmenue">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <spacer name="linksHauptmenueSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="hauptmenueButtons">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item>
+           <spacer name="obenHauptmenueSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="sichtpruefungStarten">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(208, 83, 82);
+	font: 14pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+	padding-left:35;
+	padding-right:35;
+	padding-top:12;
+	padding-bottom:12;
+}
+QPushButton:hover {
+	background-color: rgb(150, 60, 59);
+}
+QPushButton:pressed {
+	background-color: rgb(208, 83, 82);
+}</string>
+            </property>
+            <property name="text">
+             <string>SICHTPRÜFUNG STARTEN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="neuePruefanweisung">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(208, 83, 82);
+	font: 14pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+	padding-left:35;
+	padding-right:35;
+	padding-top:12;
+	padding-bottom:12;
+}
+QPushButton:hover {
+	background-color: rgb(150, 60, 59);
+}
+QPushButton:pressed {
+	background-color: rgb(208, 83, 82);
+}</string>
+            </property>
+            <property name="text">
+             <string>NEUE PRÜFANWEISUNG ERSTELLEN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pruefanweisungBearbeiten">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(208, 83, 82);
+	font: 14pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+	padding-left:35;
+	padding-right:35;
+	padding-top:12;
+	padding-bottom:12;
+}
+QPushButton:hover {
+	background-color: rgb(150, 60, 59);
+}
+QPushButton:pressed {
+	background-color: rgb(208, 83, 82);
+}</string>
+            </property>
+            <property name="text">
+             <string>PRÜFANWEISUNG BEARBEITEN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pruefanweisungLoeschen">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(208, 83, 82);
+	font: 14pt &quot;Segoe UI&quot;;
+	font-weight: bold;
+	padding-left:35;
+	padding-right:35;
+	padding-top:12;
+	padding-bottom:12;
+}
+QPushButton:hover {
+	background-color: rgb(150, 60, 59);
+}
+QPushButton:pressed {
+	background-color: rgb(208, 83, 82);
+}</string>
+            </property>
+            <property name="text">
+             <string>PRÜFANWEISUNG LÖSCHEN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="untenHauptmenueSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="rechtsHauptmenueSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungAuswahl">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QScrollArea" name="sichtpruefungAuswahlScroll">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
+          </property>
+          <widget class="QWidget" name="sichtpruefungAuswahlRaster">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1351</width>
+             <height>682</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>1351</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+            </property>
+            <property name="leftMargin">
+             <number>58</number>
+            </property>
+            <property name="topMargin">
+             <number>58</number>
+            </property>
+            <property name="rightMargin">
+             <number>58</number>
+            </property>
+            <property name="bottomMargin">
+             <number>58</number>
+            </property>
+            <property name="spacing">
+             <number>58</number>
+            </property>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungInfos">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="linksSichtpruefungInfosSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>478</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="sichtpruefungInfosLayout">
+          <item>
+           <spacer name="obenSichtpruefungInfosSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="sichtpruefungInfosTabelle">
+            <property name="labelAlignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="formAlignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="horizontalSpacing">
+             <number>0</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>0</number>
+            </property>
+            <item row="1" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosPruefvorgabeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfvorgabe</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosPrueffristLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüffrist</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosSachkundigerLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Sachkundiger</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosZusatzausbildungLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weitergehende Prüfungen&lt;br/&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;(mit Zusatzausbildung)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosHerstellerLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weitergehende Prüfungen&lt;br/&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;(nur durch Hersteller)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosAussonderungsfristLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Aussonderungsfrist</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosPruefvorgabe">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosPrueffrist">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosSachkundiger">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosZusatzausbildung">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosHersteller">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosAussonderungsfrist">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosPruefvorgabeZusatzLabel">
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfvorgabe Zusatz</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosPruefvorgabeZusatz">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="sichtpruefungInfosPruefartLabel">
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>78</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-top: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfart</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="sichtpruefungInfosPruefart">
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border-right: 2px solid black;
+border-top: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="text">
+               <string>-</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="untenSichtpruefungInfosSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="rechtsSichtpruefungInfosSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>477</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungVorgaben">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QScrollArea" name="vorgabenScroll">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="vorgaben">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_12">
+            <item>
+             <widget class="QLabel" name="vorgabenTitel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Vorgaben</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="vorgabenText">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>Für diese Sichtprüfung wurden keine Vorgaben festgelegt.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungPruefablauf">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QScrollArea" name="pruefablaufScroll">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="pruefablauf">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="pruefablaufTitel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Beschreibung des Prüfablaufs</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="pruefablaufText">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Für diese Sichtprüfung wurde keine Beschreibung des Prüfablaufs festgelegt.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungEigenschaft">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QScrollArea" name="eigenschaftBildScroll">
+          <property name="maximumSize">
+           <size>
+            <width>560</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="eigenschaftBilder">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_14">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="eigenschaftBild">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>540</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>540</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">height: 371;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="../resources/uiResources.qrc">:/icons/assets/icons/Image not found.png</pixmap>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="eigenschaftGrenze">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="eigenschaft">
+          <item>
+           <widget class="QLabel" name="eigenschaftKategorie">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Kategorie</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="eigenschaftText">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Eigenschaft</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="eigenschaftHandlungsbedarfLayout" stretch="0,0">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="eigenschaftHandlungsbedarf">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>kein Handlungsbedarf</string>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="rechtsEigenschaftHandlungsbedarfSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="eigenschaftMassnahmen">
+            <item>
+             <widget class="QLabel" name="eigenschaftMassnahmenLabel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Maßnahmen: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="eigenschaftMassnahmenEingeben">
+              <property name="styleSheet">
+               <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Maßnahme eingeben...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="untenEigenschaftSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sichtpruefungZusammenfassung">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QScrollArea" name="zusammenfassungScroll">
+          <property name="styleSheet">
+           <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungCheckliste">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteLinksSpace">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;
+background-color: rgb(81, 106, 196);
+border: 1px solid rgb(81, 106, 196);</string>
+                </property>
+                <property name="text">
+                 <string>Checkliste</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteRechtsSpace">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungChecklisteUntenSpace">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungPruefobjekt">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Prüfobjekt: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektName">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Name</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungPruefobjektStammdaten">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenLagerortLabel">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Lagerort: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="zusammenfassungPruefobjektStammdatenLagerortEingeben">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-left:none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="placeholderText">
+                 <string>Lagerort eingeben...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenNummerLabel">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Nummer:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="zusammenfassungPruefobjektStammdatenNummerEingeben">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-left:none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="placeholderText">
+                 <string>Nummer eingeben...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungSichtpruefung">
+              <property name="styleSheet">
+               <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(161, 192, 228);
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Sichtprüfung</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEigenschaftErklaerung">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungLinksSpace">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungHaken">
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 12pt &quot;Segoe UI&quot;;
+border-left: none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Haken = kein Handlungsbedarf</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungMassnahmen">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 12pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Maßnahmen festlegen</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEigenschaftBeispiel">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielLinksSpace">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielHaken">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-left: 7px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="../resources/uiResources.qrc">:/icons/assets/icons/Checkmark.png</pixmap>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielMassnahmen">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Maßnahmen</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungHinweisLabel">
+              <property name="styleSheet">
+               <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border-bottom:none;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>Hinweis:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungHinweisText">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-top:none;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>Sind Nähte aufgeplatzt oder weist der Handschuh durchgescheuerte Stellen auf, sind die Handschuhe auszusondern. Löst sich das Innenfutter, sind die Handschuhe auszusondern oder durch den Hersteller zu reparieren.</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEinsatzbereit">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEinsatzbereitLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(161, 192, 228);
+border: 1px solid rgb(81, 106, 196);</string>
+                </property>
+                <property name="text">
+                 <string>Einsatzbereit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="zusammenfassungEinsatzbereitJa">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton {
+	font: 700 16pt &quot;Segoe UI&quot;;
+    border: 1px solid rgb(81, 106, 196);
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+	image: url(:/icons/assets/icons/Radio Off.png);
+}
+
+QRadioButton::indicator:checked {
+    image: url(:/icons/assets/icons/Radio On.png);
+}
+
+QRadioButton::indicator:unchecked:hover {
+	image: url(:/icons/assets/icons/Radio Off Hover.png);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Ja</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="zusammenfassungEinsatzbereitNein">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton {
+	font: 700 16pt &quot;Segoe UI&quot;;
+    border: 1px solid rgb(81, 106, 196);
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+	image: url(:/icons/assets/icons/Radio Off.png);
+}
+
+QRadioButton::indicator:checked {
+    image: url(:/icons/assets/icons/Radio On.png);
+}
+
+QRadioButton::indicator:unchecked:hover {
+	image: url(:/icons/assets/icons/Radio Off Hover.png);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Nein</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungEinsatzbereitBemerkungen">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungEinsatzbereitBemerkungenLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+text-decoration: underline;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+text-decoration: underline;
+border: 1px solid rgb(81, 106, 196);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Bemerkungen:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPlainTextEdit" name="zusammenfassungEinsatzbereitBemerkungenEingeben">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>80</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Bemerkungen eingeben...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungSignatur" stretch="2,1,2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturPruefer">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLineEdit" name="zusammenfassungSignaturPrueferEingeben">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Prüfer eingeben...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturPrueferLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Prüfer</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturDatum">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLineEdit" name="zusammenfassungSignaturDatumEingeben">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Datum eingeben...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturDatumLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Datum</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturUnterschrift">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturUnterschriftFeld">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturUnterschriftLabel">
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Unterschrift</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="zusammenfassungUntenSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungAuswahl">
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <spacer name="linksAuswahlSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="auswahlEditor">
+          <item>
+           <spacer name="obenAuswahlSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="auswahlBildLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Bild:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="auswahlBildEinfuegen">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>371</width>
+              <height>371</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>371</width>
+              <height>371</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>371</width>
+              <height>371</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+border:5px solid black;
+border-radius:20;
+width: 371;
+height: 371;
+}
+
+QPushButton:hover {
+	background-color: rgb(50, 50, 50);
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/uiResources.qrc">
+              <normaloff>:/icons/assets/icons/Add Image.png</normaloff>:/icons/assets/icons/Add Image.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>96</width>
+              <height>96</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="auswahlPruefobjektLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Prüfobjekt:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="auswahlPruefobjektEingeben">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="maxLength">
+             <number>96</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="untenAuswahlSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="rechtsAuswahlSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungInfos">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="linksPruefanweisungInfosSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>478</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="pruefanweisungInfosLayout">
+          <item>
+           <spacer name="obenPruefanweisungInfosSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="pruefanweisungInfosTabelle">
+            <property name="labelAlignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="formAlignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="horizontalSpacing">
+             <number>0</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>0</number>
+            </property>
+            <item row="1" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosPruefvorgabe">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfvorgabe</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosPrueffrist">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüffrist</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosSachkundiger">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Sachkundiger</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosZusatzausbildung">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weitergehende Prüfungen&lt;br/&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;(mit Zusatzausbildung)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosHersteller">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weitergehende Prüfungen&lt;br/&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;(nur durch Hersteller)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosAussonderungsfrist">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Aussonderungsfrist</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosZusatzausbildungEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Weitergehende Prüfungen eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosPruefvorgabeEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="plainText">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string>Prüfvorgabe eingeben...                                            (z.B. DGUV-Grundsatz 305-002)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosPrueffristEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="plainText">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string>Prüffrist eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosSachkundigerEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Sachkundiger eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosHerstellerEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Weitergehende Prüfungen eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosAussonderungsfristEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Aussonderungsfrist eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosPruefvorgabeZusatz">
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>76</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfvorgabe Zusatz</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="pruefanweisungInfosPruefart">
+              <property name="minimumSize">
+               <size>
+                <width>395</width>
+                <height>78</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;
+border-left: 2px solid black;
+border-right: 2px solid black;
+border-top: 2px solid black;
+border-bottom: 2px solid black;</string>
+              </property>
+              <property name="text">
+               <string>Prüfart</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosPruefvorgabeZusatzEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: none;
+border-right: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Prüfvorgabe Zusatz eingeben...                                      (z.B. Kapitel 1)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPlainTextEdit" name="pruefanweisungInfosPruefartEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>442</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border-right: 2px solid black;
+border-top: 2px solid black;
+border-bottom: 2px solid black;
+padding: 5px;
+padding-left: 9px;
+padding-right: 9px;</string>
+              </property>
+              <property name="placeholderText">
+               <string>Prüfart eingeben...                                                                                           (z.B. Sicht- Funktions-  und Druckprüfung)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="untenPruefanweisungInfosSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="rechtsPruefanweisungInfosSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>477</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungVorgaben">
+       <layout class="QVBoxLayout" name="verticalLayout_16">
+        <item>
+         <widget class="QScrollArea" name="vorgabenEditorScroll">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="vorgabenEditor">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_15">
+            <item>
+             <widget class="QLabel" name="vorgabenLabel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Vorgaben</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="vorgabenTextEingeben">
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+              </property>
+              <property name="placeholderText">
+               <string>Vorgaben eingeben...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweiungPruefablauf">
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QScrollArea" name="pruefablaufScroll_2">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="pruefablaufEditor">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QLabel" name="pruefablaufLabel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Beschreibung des Prüfablaufs</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="pruefablaufTextEingeben">
+              <property name="styleSheet">
+               <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+              </property>
+              <property name="placeholderText">
+               <string>Beschreibung des Prüfablaufs eingeben...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungTypischeMaengel">
+       <layout class="QVBoxLayout" name="verticalLayout_18">
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1348</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_19">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="styleSheet">
+               <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Typische Mängel und Schadensbilder (für das Sichtprüfung Ergebnis PDF)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,1">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_3">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Ursache und Maßnahmen</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="pushButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(81, 106, 196);
+	height: 371;
+}
+
+QPushButton:hover {
+	background-color: rgb(235, 235, 235);
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../resources/uiResources.qrc">
+                  <normaloff>:/icons/assets/icons/Add Image.png</normaloff>:/icons/assets/icons/Add Image.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>96</width>
+                  <height>96</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QTextEdit" name="textEdit">
+                <property name="styleSheet">
+                 <string notr="true">font: 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_2">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Mangel/Schadensbild</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>208</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungEigenschaft">
+       <layout class="QHBoxLayout" name="horizontalLayout_18">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QScrollArea" name="bildEditorScroll">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>560</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>560</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+          <widget class="QWidget" name="bildEditor">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>692</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="eigenschaftBildEinfuegen">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>540</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+border:5px solid black;
+border-radius:20;
+height: 304;
+}
+
+QPushButton:hover {
+	background-color: rgb(50, 50, 50);
+}</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../resources/uiResources.qrc">
+                <normaloff>:/icons/assets/icons/Add Image.png</normaloff>:/icons/assets/icons/Add Image.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>96</width>
+                <height>96</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="eigenschaftEditorGrenze">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="eigenschaftEditor">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="eigenschaftEditorKategorieEingeben">
+            <property name="styleSheet">
+             <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="placeholderText">
+             <string>Kategoriename eingeben...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="eigenschaftEditorEigenschafteingeben">
+            <property name="styleSheet">
+             <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="placeholderText">
+             <string>Prüfeigenschaft eingeben...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="eigenschaftEditorHandlungsbedarfLayout">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="eigenschaftEditorHandlungsbedarf">
+              <property name="cursor">
+               <cursorShape>ArrowCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>kein Handlungsbedarf</string>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="rechtsEigenschaftEditorHandlungsbedarfSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="eigenschaftEditorMassnahmen">
+            <item>
+             <widget class="QLabel" name="eigenschaftEditorMassnahmenLabel">
+              <property name="styleSheet">
+               <string notr="true">font: 600 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Maßnahmen: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="eigenschaftEditorMassnahmenEingabe">
+              <property name="styleSheet">
+               <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="untenEigenschaftEditorSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pruefanweisungZusammenfassung">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QScrollArea" name="zusammenfassungScroll_2">
+          <property name="styleSheet">
+           <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1336</width>
+             <height>773</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_17">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungCheckliste_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteLinksSpace_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteLabel_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font: 600 20pt &quot;Segoe UI&quot;;
+background-color: rgb(81, 106, 196);
+border: 1px solid rgb(81, 106, 196);</string>
+                </property>
+                <property name="text">
+                 <string>Checkliste</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungChecklisteRechtsSpace_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungChecklisteUntenSpace_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungPruefobjekt_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektLabel_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Prüfobjekt: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektName_2">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Name</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungPruefobjektStammdaten_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenLagerortLabel_2">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Lagerort: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenLagerortLeer">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-left:none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenNummerLabel_2">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string>Nummer:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungPruefobjektStammdatenNummerLeer">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-left:none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungSichtpruefung_2">
+              <property name="styleSheet">
+               <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(161, 192, 228);
+border: 1px solid rgb(81, 106, 196);
+padding-top: 6px;
+padding-bottom: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Sichtprüfung</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEigenschaftErklaerung_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungLinksSpace_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-right:none;
+background-color: rgb(255, 255, 255);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungHaken_2">
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 12pt &quot;Segoe UI&quot;;
+border-left: none;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Haken = kein Handlungsbedarf</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftErklaerungMassnahmen_2">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 12pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Maßnahmen festlegen</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEigenschaftBeispiel_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielLinksSpace_2">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielHaken_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+padding-left: 7px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="../resources/uiResources.qrc">:/icons/assets/icons/Checkmark.png</pixmap>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEigenschaftBeispielMassnahmen_2">
+                <property name="styleSheet">
+                 <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Maßnahmen</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="zusammenfassungHinweisLabel_2">
+              <property name="styleSheet">
+               <string notr="true">border: 1px solid rgb(81, 106, 196);
+font: 700 14pt &quot;Segoe UI&quot;;
+border-bottom:none;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string>Hinweis:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPlainTextEdit" name="zusammenfassungHinweisEingeben">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: 1px solid rgb(81, 106, 196);
+border-top:none;
+height: 80;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="placeholderText">
+               <string>Hinweis eingeben...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungEinsatzbereit_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="zusammenfassungEinsatzbereitLabel_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(161, 192, 228);
+border: 1px solid rgb(81, 106, 196);</string>
+                </property>
+                <property name="text">
+                 <string>Einsatzbereit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="zusammenfassungEinsatzbereitJa_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton {
+	font: 700 16pt &quot;Segoe UI&quot;;
+    border: 1px solid rgb(81, 106, 196);
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+	image: url(:/icons/assets/icons/Radio Off.png);
+}
+
+QRadioButton::indicator:checked {
+    image: url(:/icons/assets/icons/Radio On.png);
+}
+
+QRadioButton::indicator:unchecked:hover {
+	image: url(:/icons/assets/icons/Radio Off Hover.png);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Ja</string>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="zusammenfassungEinsatzbereitNein_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LayoutDirection::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton {
+	font: 700 16pt &quot;Segoe UI&quot;;
+    border: 1px solid rgb(81, 106, 196);
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+	image: url(:/icons/assets/icons/Radio Off.png);
+}
+
+QRadioButton::indicator:checked {
+    image: url(:/icons/assets/icons/Radio On.png);
+}
+
+QRadioButton::indicator:unchecked:hover {
+	image: url(:/icons/assets/icons/Radio Off Hover.png);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Nein</string>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungEinsatzbereitBemerkungen_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungEinsatzbereitBemerkungenLabel_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font: 700 16pt &quot;Segoe UI&quot;;
+text-decoration: underline;
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+text-decoration: underline;
+border: 1px solid rgb(81, 106, 196);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Bemerkungen:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungEinsatzbereitBemerkungenLeer">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>80</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="zusammenfassungSignatur_2" stretch="2,1,2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturPruefer_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturPrueferLeer">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturPrueferLabel_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Prüfer</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturDatum_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturDatumLeer">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturDatumLabel_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Datum</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="zusammenfassungSignaturUnterschrift_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturUnterschriftFeld_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-bottom: none;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="zusammenfassungSignaturUnterschriftLabel_2">
+                  <property name="styleSheet">
+                   <string notr="true">border: 1px solid rgb(81, 106, 196);
+color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255);
+border-top: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Unterschrift</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="zusammenfassungUntenSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="erfolgreichAbgeschlossen">
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <spacer name="obenAbschlussSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="abschlussnachricht">
+          <property name="styleSheet">
+           <string notr="true">font: 600 36pt &quot;Segoe UI&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Sichtprüfung erfolgreich abgeschlossen!</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="zumHauptmenueZentrierung">
+          <item>
+           <spacer name="linksZumHauptmenueSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="zumHauptmenue">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: none;
+	color: rgb(208, 83, 82);
+	font: 600 16pt &quot;Segoe UI&quot;;
+	padding-left:35;
+	padding-right:35;
+	padding-top:12;
+	padding-bottom:12;
+}
+QPushButton:hover {
+	color: rgb(255, 255, 255);
+}
+QPushButton:pressed {
+	color: rgb(208, 83, 82);
+}</string>
+            </property>
+            <property name="text">
+             <string>Zurück zum Hauptmenü</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="rechtsZumHauptmenueSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="untenAbschlussSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1368</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="../resources/uiResources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

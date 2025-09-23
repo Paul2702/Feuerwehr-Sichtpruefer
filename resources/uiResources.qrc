@@ -1,0 +1,26 @@
+<RCC>
+  <qresource prefix="img">
+    <file>../assets/Feuerwehr_Logo.png</file>
+  </qresource>
+  <qresource prefix="icons">
+    <file>../assets/icons/Image not found.png</file>
+    <file>../assets/icons/AbfallOff.png</file>
+    <file>../assets/icons/LinksOff.png</file>
+    <file>../assets/icons/PlusOff.png</file>
+    <file>../assets/icons/RechtsOff.png</file>
+    <file>../assets/icons/XOff.png</file>
+    <file>../assets/icons/HakenOff.png</file>
+    <file>../assets/icons/Stauferlöwe.png</file>
+    <file>../assets/icons/Abfall.png</file>
+    <file>../assets/icons/Add Image.png</file>
+    <file>../assets/icons/Checkmark.png</file>
+    <file>../assets/icons/Radio Off Hover.png</file>
+    <file>../assets/icons/Radio Off.png</file>
+    <file>../assets/icons/Radio On.png</file>
+    <file>../assets/icons/Haken.png</file>
+    <file>../assets/icons/Links.png</file>
+    <file>../assets/icons/Plus.png</file>
+    <file>../assets/icons/Rechts.png</file>
+    <file>../assets/icons/X.png</file>
+  </qresource>
+</RCC>

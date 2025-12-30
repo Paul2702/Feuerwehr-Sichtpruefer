@@ -13,7 +13,7 @@ from src.logic.state import AppState
 from src.logic.vorgang import Vorgang
 from src.logic.validators import ValidationController
 from src.models.pruefanweisung import Pruefanweisung
-from util import getUniqueFilename
+from src.util import getUniqueFilename
 from ui.ui_main import Ui_MainWindow
 
 logger = logging.getLogger(__name__)

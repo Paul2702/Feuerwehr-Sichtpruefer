@@ -14,7 +14,7 @@ from reportlab.lib.enums import TA_RIGHT, TA_CENTER, TA_LEFT
 from src.logic.serializer import eigenschaftspruefungenNachKategorienGruppieren
 from src.models.pruefanweisung import Pruefanweisung
 from src.models.sichtpruefung import Sichtpruefung
-from util import cleanHtml
+from src.util import cleanHtml
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 

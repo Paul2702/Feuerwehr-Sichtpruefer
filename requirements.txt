@@ -2,3 +2,5 @@ PySide6
 reportlab
 bleach
 beautifulsoup4
+pytest
+pytest-mock

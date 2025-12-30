@@ -1,0 +1,9 @@
+from enum import Enum
+
+
+class Vorgang(Enum):
+    HAUPTMENUE = 0
+    SICHTPRUEFUNG = 1
+    PRUEFANWEISUNG_ERSTELLEN = 2
+    PRUEFANWEISUNG_BEARBEITEN = 3
+    PRUEFANWEISUNG_LOESCHEN = 4

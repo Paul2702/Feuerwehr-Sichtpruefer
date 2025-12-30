@@ -2,34 +2,53 @@ import os
 import shutil
 import webbrowser
 import yaml
+import logging
 from PySide6.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QLabel, QSizePolicy, QPlainTextEdit, QSpacerItem
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 from PySide6.QtCore import Qt, QSize, QCoreApplication
 from src.gui.navigation import NavigationController
 from src.gui.pages import Page
 from src.gui.viewHandler import ViewHandler
-from src.logic.serializer import eigenschaftenNachKategorienGruppieren, eigenschaftspruefungenNachKategorienGruppieren, ladePruefanweisungXml, ladePruefanweisungenXml
 from src.logic.state import AppState
+from src.logic.vorgang import Vorgang
 from src.logic.validators import ValidationController
 from src.models.pruefanweisung import Pruefanweisung
 from util import getUniqueFilename
 from ui.ui_main import Ui_MainWindow
 
+logger = logging.getLogger(__name__)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        logger.debug("MainWindow.__init__() aufgerufen")
+        
         self.ui = Ui_MainWindow()  
         self.ui.setupUi(self)
+        logger.debug("UI-Setup abgeschlossen")
 
-        with open("config.yaml", "r", encoding="utf-8") as config:
-            self.config = yaml.safe_load(config)
+        try:
+            with open("config.yaml", "r", encoding="utf-8") as config:
+                self.config = yaml.safe_load(config)
+            logger.info("Konfigurationsdatei erfolgreich geladen")
+        except Exception as e:
+            logger.error(f"Fehler beim Laden der Konfigurationsdatei: {e}", exc_info=True)
+            raise
         
         self.state = AppState(self.ui)
+        logger.debug("AppState initialisiert")
+        
         self.navigator = NavigationController(self.ui, self.state)
+        logger.debug("NavigationController initialisiert")
+        
         self.validator = ValidationController(self, self.ui, self.state)
+        logger.debug("ValidationController initialisiert")
+        
         self.view_handler = ViewHandler(self, self.navigator, self.ui, self.state)
+        logger.debug("ViewHandler initialisiert")
 
         self.assetsDir = "assets/images"
+        logger.debug(f"Assets-Verzeichnis: {self.assetsDir}")
 
         # Buttons verbinden
         # Navigationsleiste
@@ -49,11 +68,11 @@ class MainWindow(QMainWindow):
 
         # Prüfanweisung Auswahl
         self.ui.auswahlBildEinfuegen.setProperty("isPlaceholder", True)
-        self.ui.auswahlBildEinfuegen.clicked.connect(self.bildEinfuegenSeite7)
+        self.ui.auswahlBildEinfuegen.clicked.connect(self.bildEinfuegenPruefanweisungAuswahl)
 
         # Prüfanweisung Eigenschaft
         self.ui.eigenschaftBildEinfuegen.setProperty("isPlaceholder", True)
-        self.ui.eigenschaftBildEinfuegen.clicked.connect(self.bildEinfuegenSeite12)
+        self.ui.eigenschaftBildEinfuegen.clicked.connect(self.bildEinfuegenPruefanweisungEigenschaft)
         
         # Erfolgreich Abgeschlossen
         self.ui.zumHauptmenue.clicked.connect(self.zurueckZumHauptmenueGeklickt)
@@ -63,41 +82,50 @@ class MainWindow(QMainWindow):
     # Navigationsleiste
     def feuerwehrLogoGeklickt(self):
         url = self.config["feuerwehrHompageURL"]
+        logger.info(f"Feuerwehr-Logo geklickt, öffne URL: {url}")
         webbrowser.open(url)
 
     def zurueckGeklickt(self):
-        print("nicht implementiert")
+        logger.warning("Zurück-Button geklickt, aber noch nicht implementiert")
 
     def weiterGeklickt(self):
-        print("nicht implementiert")
+        logger.warning("Weiter-Button geklickt, aber noch nicht implementiert")
 
     def hinzufuegenGeklickt(self):
-        print("Hinzufügen geklickt")
+        logger.info("Hinzufügen-Button geklickt")
         istSeiteValide, statusNachricht = self.validator.validiereHinzufuegenPruefanweisungEigenschaft()
         if istSeiteValide:
+            logger.debug("Validierung erfolgreich, speichere Seiteninhalte")
             self.state.speichereSeiteninhalte(Page.PRUEFANWEISUNG_EIGENSCHAFT)
             self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            logger.info("Eigenschaft hinzugefügt und Felder zurückgesetzt")
         elif statusNachricht:
+            logger.warning(f"Validierung fehlgeschlagen: {statusNachricht}")
             self.statusBarMeldung(statusNachricht)
 
     def fertigGeklickt(self):
-        print("Fertig geklickt")
         currentPage = self.state.get_current_page()
+        logger.info(f"Fertig-Button geklickt auf Seite: {currentPage}")
         istSeiteValide, statusNachricht = self.validator.istSeiteValide(currentPage)
         if istSeiteValide:
+            logger.debug("Seite ist valide, speichere Inhalte")
             self.state.speichereSeiteninhalte(currentPage)
             nextPage = self.navigator.get_next_page()
+            logger.debug(f"Nächste Seite: {nextPage}")
             self.view_handler.ladeSeiteninhalte(nextPage)
             self.navigator.goto(nextPage)
+            logger.info(f"Navigation zu Seite: {nextPage}")
         elif statusNachricht:
+            logger.warning(f"Validierung fehlgeschlagen: {statusNachricht}")
             self.statusBarMeldung(statusNachricht)
 
 
     def loeschenGeklickt(self):
-        print("Löschen geklickt")
-        self.loeschenSeite12()
+        logger.info("Löschen-Button geklickt")
+        self.loeschenPruefanweisungEigenschaft()
         
     def abbrechenGeklickt(self):
+        logger.info("Abbrechen-Button geklickt, zeige Bestätigungsdialog")
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Warning)
         msg_box.setWindowTitle("Bestätigung")
@@ -109,46 +137,60 @@ class MainWindow(QMainWindow):
         antwort = msg_box.exec()
 
         if antwort == QMessageBox.Yes:
-            print("Abgebrochen")
+            logger.info("Benutzer hat Abbrechen bestätigt, kehre zum Hauptmenü zurück")
+            self.state.aktuellerVorgang = Vorgang.HAUPTMENUE
             self.view_handler.resetAlleFelder()
             self.navigator.goto(Page.HAUPTMENUE)
+        else:
+            logger.debug("Abbrechen abgebrochen")
 
 
     # Seiten Funktionen 
     # Hauptmenü
     def startSichtpruefung(self):
-        print("Sichtprüfung gestartet")
+        logger.info("Sichtprüfung wird gestartet")
         if self.auswahlVorbereiten():
+            self.state.aktuellerVorgang = Vorgang.SICHTPRUEFUNG
             self.ui.abbrechen.setEnabled(True)
             self.navigator.goto(Page.SICHTPRUEFUNG_AUSWAHL)
+            logger.info("Sichtprüfung gestartet, navigiere zur Auswahlseite")
+        else:
+            logger.warning("Sichtprüfung konnte nicht gestartet werden (keine Prüfanweisungen gefunden)")
 
     def createPruefanweisung(self):
-        print("createPruefanweisung")
-        self.state.pruefanweisung = Pruefanweisung()
+        logger.info("Neue Prüfanweisung wird erstellt")
+        self.state.aktuellerVorgang = Vorgang.PRUEFANWEISUNG_ERSTELLEN
+        self.state.pruefanweisungManager.pruefanweisung = Pruefanweisung()
         self.ui.fertig.setEnabled(True)
         self.ui.abbrechen.setEnabled(True)
         self.navigator.goto(Page.PRUEFANWEISUNG_AUSWAHL)
+        logger.info("Prüfanweisung-Erstellung gestartet, navigiere zur Auswahlseite")
 
     def editPruefanweisung(self):
-        print("editPruefanweisung")
+        logger.warning("Prüfanweisung bearbeiten aufgerufen, aber noch nicht implementiert")
         # TODO
 
     def deletePruefanweisung(self):
-        print("deletePruefanweisung")
+        logger.warning("Prüfanweisung löschen aufgerufen, aber noch nicht implementiert")
         # TODO
 
     # Sichtprüfung Auswahl
     def auswahlVorbereiten(self):
+        logger.debug("Bereite Sichtprüfung-Auswahl vor")
         if not os.path.exists("data/pruefanweisungen.xml"):
+            logger.warning("Prüfanweisungen-XML-Datei nicht gefunden")
             self.statusBar().showMessage("Keine vorhandenen Prüfanweisungen gefunden, die zur Auswahl stehen.", 3000)
             return False
+        logger.debug("Lade Seiteninhalte für Sichtprüfung-Auswahl")
         self.view_handler.ladeSeiteninhalte(Page.SICHTPRUEFUNG_AUSWAHL)
         return True
 
     # Prüfanweisung Auswahl    
-    def bildEinfuegenSeite7(self):
+    def bildEinfuegenPruefanweisungAuswahl(self):
+        logger.info("Bild für Prüfanweisung-Auswahl wird eingefügt")
         filePath = self.bildInProjektEinfuegen()
         if filePath:
+            logger.debug(f"Bild erfolgreich eingefügt: {filePath}")
             self.ui.auswahlBildEinfuegen.setIcon(QIcon(filePath))
             self.ui.auswahlBildEinfuegen.setIconSize(self.ui.auswahlBildEinfuegen.size())
             self.ui.auswahlBildEinfuegen.setProperty("isPlaceholder", False)
@@ -163,19 +205,26 @@ class MainWindow(QMainWindow):
 "QPushButton:hover {\n"
 "	background-color: rgb(50, 50, 50);\n"
 "}")
+        else:
+            logger.debug("Bild-Einfügen abgebrochen")
 
     # Prüfanweisung Schadensbilder
     #TODO
 
     # Prüfanweisung Eigenschaft
         
-    def loeschenSeite12(self):
-        self.resetAlleFelderAufSeite(11)
-        self.state.aktuelleEigenschaftIndex -= 1
+    def loeschenPruefanweisungEigenschaft(self):
+        logger.info(f"Lösche Prüfanweisung-Eigenschaft (Index: {self.state.aktuelleEigenschaftIndex})")
+        self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+        if self.state.aktuelleEigenschaftIndex > 0:
+            self.state.aktuelleEigenschaftIndex -= 1
+            logger.debug(f"Eigenschaftsindex reduziert auf: {self.state.aktuelleEigenschaftIndex}")
     
-    def bildEinfuegenSeite12(self):
+    def bildEinfuegenPruefanweisungEigenschaft(self):
+        logger.info("Bild für Prüfanweisung-Eigenschaft wird eingefügt")
         bildPfad = self.bildInProjektEinfuegen()
         if bildPfad:
+            logger.debug(f"Bild erfolgreich eingefügt: {bildPfad}")
             # Bild und Textfeld über Button einfügen
             anzahlWidgets = self.ui.verticalLayout_11.count()
             if isinstance(self.ui.verticalLayout_11.itemAt(anzahlWidgets-1), QSpacerItem):
@@ -220,24 +269,37 @@ class MainWindow(QMainWindow):
 
     # Erfolgreich abgeschlossen
     def zurueckZumHauptmenueGeklickt(self):
+        logger.info("Zurück zum Hauptmenü geklickt")
+        self.state.aktuellerVorgang = Vorgang.HAUPTMENUE
         self.view_handler.resetAlleFelder()
         self.navigator.goto(Page.HAUPTMENUE)
 
     # Allgemeine UI Funktionen
     def bildInProjektEinfuegen(self):
+        logger.debug("Öffne Dateidialog für Bildauswahl")
         filePath, _ = QFileDialog.getOpenFileName(self, "Bild auswählen", "", "Bilder (*.png *.jpg *.jpeg)")
         if filePath:
+            logger.info(f"Bild ausgewählt: {filePath}")
             os.makedirs(self.assetsDir, exist_ok=True)  # Falls assets-Ordner nicht existiert, erstellen
+            logger.debug(f"Assets-Verzeichnis sichergestellt: {self.assetsDir}")
 
             # Neuen Pfad im assets-Ordner erstellen (selber Dateiname wie Original)
             fileName = os.path.basename(filePath)
             fileName = getUniqueFilename(self.assetsDir, fileName)
             newPath = os.path.join(self.assetsDir, fileName)
+            logger.debug(f"Kopiere Bild nach: {newPath}")
 
             # Datei kopieren
-            shutil.copy(filePath, newPath)
-
-            return newPath
+            try:
+                shutil.copy(filePath, newPath)
+                logger.info(f"Bild erfolgreich kopiert: {newPath}")
+                return newPath
+            except Exception as e:
+                logger.error(f"Fehler beim Kopieren des Bildes: {e}", exc_info=True)
+                return None
+        else:
+            logger.debug("Bildauswahl abgebrochen")
+            return None
         
     def statusBarMeldung(self, nachricht):
         self.statusBar().showMessage(nachricht, 3000)

@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.pdfbase.ttfonts import TTFont
@@ -17,20 +18,29 @@ from util import cleanHtml
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+logger = logging.getLogger(__name__)
+
 
 class PdfGenerator():
     def __init__(self):
+        logger.debug("PdfGenerator wird initialisiert")
         # Seitenbreite und -höhe
         self.PAGE_WIDTH, self.PAGE_HEIGHT = A4
         self.logo_path = "assets/pdf_Feuerwehr_Logo.png"
+        logger.debug(f"Logo-Pfad: {self.logo_path}")
 
         # SourceSans3-Schriftarten registrieren
-        pdfmetrics.registerFont(TTFont("SourceSans3", "resources/fonts/Source_Sans_3/static/SourceSans3-Regular.ttf"))
-        pdfmetrics.registerFont(TTFont("SourceSans3-SemiBold", "resources/fonts/Source_Sans_3/static/SourceSans3-SemiBold.ttf"))
-        pdfmetrics.registerFont(TTFont("SourceSans3-SemiBold-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-SemiBoldItalic.ttf"))
-        pdfmetrics.registerFont(TTFont("SourceSans3-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-Italic.ttf"))
-        pdfmetrics.registerFont(TTFont("SourceSans3-Light", "resources/fonts/Source_Sans_3/static/SourceSans3-Light.ttf"))
-        pdfmetrics.registerFont(TTFont("SourceSans3-Light-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-LightItalic.ttf"))
+        try:
+            pdfmetrics.registerFont(TTFont("SourceSans3", "resources/fonts/Source_Sans_3/static/SourceSans3-Regular.ttf"))
+            pdfmetrics.registerFont(TTFont("SourceSans3-SemiBold", "resources/fonts/Source_Sans_3/static/SourceSans3-SemiBold.ttf"))
+            pdfmetrics.registerFont(TTFont("SourceSans3-SemiBold-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-SemiBoldItalic.ttf"))
+            pdfmetrics.registerFont(TTFont("SourceSans3-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-Italic.ttf"))
+            pdfmetrics.registerFont(TTFont("SourceSans3-Light", "resources/fonts/Source_Sans_3/static/SourceSans3-Light.ttf"))
+            pdfmetrics.registerFont(TTFont("SourceSans3-Light-Italic", "resources/fonts/Source_Sans_3/static/SourceSans3-LightItalic.ttf"))
+            logger.debug("Schriftarten erfolgreich registriert")
+        except Exception as e:
+            logger.error(f"Fehler beim Registrieren der Schriftarten: {e}", exc_info=True)
+            raise
         
         pdfmetrics.registerFontFamily(
             "SourceSans3",
@@ -51,10 +61,15 @@ class PdfGenerator():
         self.bemerkungenHoehe = 0
 
 
-    def erstelle_pdf(self, pdfPfad, sichtpruefung: Sichtpruefung):
+    def erstelle_pdf(self, pdfPfad: str, sichtpruefung: Sichtpruefung) -> None:
+        logger.info(f"Erstelle PDF: {pdfPfad}")
+        logger.debug(f"Prüfobjekt: {sichtpruefung.pruefanweisung.namePruefobjekt}")
+        
         self.checkboxYPos = self.checkboxY
         self.sichtpruefung = sichtpruefung
         self.pruefungenNachKategorienGruppiert = eigenschaftspruefungenNachKategorienGruppieren(self.sichtpruefung.eigenschaftspruefungen)
+        logger.debug(f"Eigenschaftsprüfungen gruppiert in {len(self.pruefungenNachKategorienGruppiert)} Kategorien")
+        
         doc = SimpleDocTemplate(pdfPfad, pagesize=A4)
         elements = []
         styles = getSampleStyleSheet()
@@ -360,15 +375,21 @@ class PdfGenerator():
         elements.append(header)
 
         # PDF speichern
-        doc.build(elements, onFirstPage=self.draw_header, onLaterPages=self.weitereDesignElementeHinzufuegen)
+        try:
+            logger.debug("Baue PDF-Dokument auf")
+            doc.build(elements, onFirstPage=self.draw_header, onLaterPages=self.weitereDesignElementeHinzufuegen)
+            logger.info(f"PDF erfolgreich erstellt: {pdfPfad}")
+        except Exception as e:
+            logger.error(f"Fehler beim Erstellen des PDFs: {e}", exc_info=True)
+            raise
 
-    def weitereDesignElementeHinzufuegen(self, canvas, doc):
+    def weitereDesignElementeHinzufuegen(self, canvas: canvas.Canvas, doc: SimpleDocTemplate) -> None:
         self.draw_header(canvas, doc)
-        if doc.page == 4:  # Prüft, ob aktuelle Seite 3 ist
+        if self.sichtpruefung and doc.page == 4:  # Prüft, ob aktuelle Seite 3 ist
             self.draw_checkbox(canvas, self.checkboxJaX, self.checkboxYPos, checked=self.sichtpruefung.einsatzbereit)  # Checkbox in der Mitte
             self.draw_checkbox(canvas, self.checkboxNeinX, self.checkboxYPos, checked=not self.sichtpruefung.einsatzbereit)  # Checkbox in der Mitte
 
-    def draw_header(self, canvas, doc):
+    def draw_header(self, canvas: canvas.Canvas, doc: SimpleDocTemplate) -> None:
         # Bildgröße (angepasst an dein gewünschtes Layout)
         logo_width = 181
         logo_height = 47.5
@@ -378,7 +399,7 @@ class PdfGenerator():
         logo_y = self.PAGE_HEIGHT - logo_height - 11  # Abstand vom oberen Rand
         canvas.drawImage(self.logo_path, logo_x, logo_y, width=logo_width, height=logo_height, mask="auto")
 
-    def draw_checkbox(self, c: canvas.Canvas, x, y, size=9.5, checked=False):
+    def draw_checkbox(self, c: canvas.Canvas, x: float, y: float, size: float = 9.5, checked: bool = False) -> None:
         """Zeichnet eine Checkbox an Position (x, y)"""
         c.setLineWidth(0.8)
         c.rect(x, y, size, size, stroke=1, fill=0)  # Zeichne Quadrat (Checkbox)

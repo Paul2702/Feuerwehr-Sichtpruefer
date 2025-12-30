@@ -1,5 +1,7 @@
 import datetime
-from PySide6.QtWidgets import QLineEdit, QTextEdit, QCheckBox, QRadioButton, QComboBox, QMessageBox, QFileDialog, QVBoxLayout, QPushButton, QLabel, QHBoxLayout, QSizePolicy, QPlainTextEdit, QSpacerItem
+import logging
+from typing import TYPE_CHECKING
+from PySide6.QtWidgets import QLineEdit, QTextEdit, QCheckBox, QRadioButton, QComboBox, QMessageBox, QFileDialog, QVBoxLayout, QPushButton, QLabel, QHBoxLayout, QSizePolicy, QPlainTextEdit, QSpacerItem, QMainWindow
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 from PySide6.QtCore import Qt, QObject, QSize, QCoreApplication
 
@@ -10,21 +12,26 @@ from src.logic.state import AppState
 from src.models.eigenschaft import Eigenschaft
 from ui.ui_main import Ui_MainWindow
 
+if TYPE_CHECKING:
+    pass
+
+logger = logging.getLogger(__name__)
+
 class ViewHandler(QObject):
-    def __init__(self, mainWindow, navigator: NavigationController, ui: Ui_MainWindow, state: AppState):
-        self.navigator = navigator
-        self.ui = ui
-        self.state = state
+    def __init__(self, mainWindow: QMainWindow, navigator: NavigationController, ui: Ui_MainWindow, state: AppState) -> None:
+        self.navigator: NavigationController = navigator
+        self.ui: Ui_MainWindow = ui
+        self.state: AppState = state
 
         super().__init__(mainWindow)
-        self.imageNotFoundPath = "assets/icons/Image not found"
-        self.placeholderPath = "assets/icons/Add Image.png"
-        self.placeholderIconSize = QSize(96, 96)
+        self.imageNotFoundPath: str = "assets/icons/Image not found"
+        self.placeholderPath: str = "assets/icons/Add Image.png"
+        self.placeholderIconSize: QSize = QSize(96, 96)
 
-        self.zusammenfassungEigenschaftenIndex = 7
-        self.zusammenfassungAnzahlZeilen = 11
+        self.zusammenfassungEigenschaftenIndex: int = 7
+        self.zusammenfassungAnzahlZeilen: int = 11
 
-        self.ladbareSeitenInhalte = {
+        self.ladbareSeitenInhalte: dict[Page, callable] = {
             Page.SICHTPRUEFUNG_AUSWAHL: self.ladeSichtpruefungAuswahl,
             Page.SICHTPRUEFUNG_VORGABEN: self.ladeSichtpruefungVorgaben,
             Page.SICHTPRUEFUNG_PRUEFABLAUF: self.ladeSichtpruefungPruefablauf,
@@ -33,15 +40,21 @@ class ViewHandler(QObject):
             Page.PRUEFANWEISUNG_ZUSAMMENFASSUNG: self.ladePruefanweisungZusammenfassung
         }
 
-    def ladeSeiteninhalte(self, page: Page):
+    def ladeSeiteninhalte(self, page: Page) -> None:
+        logger.debug(f"Lade Seiteninhalte für Seite: {page}")
         if page in self.ladbareSeitenInhalte:
             self.ladbareSeitenInhalte[page]()
+            logger.debug(f"Seiteninhalte für {page} erfolgreich geladen")
+        else:
+            logger.debug(f"Keine Ladefunktion für Seite {page} definiert")
 
-    def ladeSichtpruefungAuswahl(self):
+    def ladeSichtpruefungAuswahl(self) -> None:
+        logger.info("Lade Sichtprüfung-Auswahl")
         auswahl = ladePruefanweisungenXml()
+        logger.debug(f"Gefundene Prüfanweisungen: {len(auswahl)}")
         self.ladePruefanweisungenInAuswahl(auswahl)
 
-    def ladePruefanweisungenInAuswahl(self, auswahl):
+    def ladePruefanweisungenInAuswahl(self, auswahl) -> None:
         # Erst alle alten Widgets aus dem Layout entfernen
         while self.ui.gridLayout.count():
             item = self.ui.gridLayout.takeAt(0)
@@ -120,56 +133,82 @@ class ViewHandler(QObject):
             # Merke: Bei ScrollAreas ganz vorsichtig mit Größenangaben umgehen. Selbst eine minimum Size verhindert die Expandierung von Widgets...
             # self.ui.sichtpruefungAuswahlRaster.setMinimumHeight(self.ui.gridLayout.sizeHint().height())
 
-    def ladePruefanweisung(self):
+    def ladePruefanweisung(self) -> None:
         button = self.sender()
         if button:
             xmlPfad = button.property("xmlPfad")
             if xmlPfad:
-                print(f"Lade Prüfanweisung aus: {xmlPfad}")
-                self.state.sichtpruefung = ladePruefanweisungXml(xmlPfad)
-                self.ui.sichtpruefungInfosPruefart.setText(self.state.sichtpruefung.pruefanweisung.pruefart)
-                self.ui.sichtpruefungInfosPruefvorgabe.setText(self.state.sichtpruefung.pruefanweisung.pruefvorgabe)
-                self.ui.sichtpruefungInfosPruefvorgabeZusatz.setText(self.state.sichtpruefung.pruefanweisung.pruefvorgabeZusatz)
-                self.ui.sichtpruefungInfosPrueffrist.setText(self.state.sichtpruefung.pruefanweisung.prueffrist)
-                self.ui.sichtpruefungInfosSachkundiger.setText(self.state.sichtpruefung.pruefanweisung.sachkundiger)
-                self.ui.sichtpruefungInfosZusatzausbildung.setText(self.state.sichtpruefung.pruefanweisung.zusatzausbildung)
-                self.ui.sichtpruefungInfosHersteller.setText(self.state.sichtpruefung.pruefanweisung.hersteller)
-                self.ui.sichtpruefungInfosAussonderungsfrist.setText(self.state.sichtpruefung.pruefanweisung.aussonderungsfrist)
-                self.ui.fertig.setEnabled(True)
-                nextPage = self.navigator.get_next_page()
-                self.navigator.goto(nextPage)
+                logger.info(f"Lade Prüfanweisung aus: {xmlPfad}")
+                try:
+                    self.state.sichtpruefungManager.sichtpruefung = ladePruefanweisungXml(xmlPfad)
+                    logger.debug("Prüfanweisung erfolgreich geladen, fülle UI-Felder")
+                    if self.state.sichtpruefungManager.sichtpruefung is None:
+                        raise ValueError("Sichtpruefung wurde nicht korrekt geladen")
+                    self.ui.sichtpruefungInfosPruefart.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.pruefart)
+                    self.ui.sichtpruefungInfosPruefvorgabe.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.pruefvorgabe)
+                    self.ui.sichtpruefungInfosPruefvorgabeZusatz.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.pruefvorgabeZusatz)
+                    self.ui.sichtpruefungInfosPrueffrist.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.prueffrist)
+                    self.ui.sichtpruefungInfosSachkundiger.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.sachkundiger)
+                    self.ui.sichtpruefungInfosZusatzausbildung.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.zusatzausbildung)
+                    self.ui.sichtpruefungInfosHersteller.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.hersteller)
+                    self.ui.sichtpruefungInfosAussonderungsfrist.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.aussonderungsfrist)
+                    self.ui.fertig.setEnabled(True)
+                    nextPage = self.navigator.get_next_page()
+                    self.navigator.goto(nextPage)
+                    logger.info(f"Prüfanweisung geladen: {self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.namePruefobjekt}")
+                except Exception as e:
+                    logger.error(f"Fehler beim Laden der Prüfanweisung: {e}", exc_info=True)
 
             else:
-                print("Fehler: Kein XML-Pfad gefunden!")
+                logger.error("Fehler: Kein XML-Pfad gefunden!")
+        else:
+            logger.warning("LadePruefanweisung aufgerufen, aber kein Sender-Button gefunden")
 
-    def ladeSichtpruefungVorgaben(self):
-        vorgabenText = self.state.sichtpruefung.pruefanweisung.vorgabenText
+    def ladeSichtpruefungVorgaben(self) -> None:
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            logger.error("Sichtpruefung wurde nicht initialisiert")
+            return
+        vorgabenText = self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.vorgabenText
         if vorgabenText:
             self.ui.vorgabenText.setText(vorgabenText)
 
-    def ladeSichtpruefungPruefablauf(self):
-        pruefablaufText = self.state.sichtpruefung.pruefanweisung.pruefablaufText
+    def ladeSichtpruefungPruefablauf(self) -> None:
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            logger.error("Sichtpruefung wurde nicht initialisiert")
+            return
+        pruefablaufText = self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.pruefablaufText
         if pruefablaufText:
             self.ui.pruefablaufText.setText(pruefablaufText)
 
-    def ladeSichtpruefungEigenschaft(self):
+    def ladeSichtpruefungEigenschaft(self) -> None:
+        logger.debug(f"Lade Sichtprüfung-Eigenschaft (Index: {self.state.aktuelleEigenschaftIndex})")
         self.resetAlleFelderAufSeite(Page.SICHTPRUEFUNG_EIGENSCHAFT)
-        eigenschaft = self.state.sichtpruefung.eigenschaftspruefungen[self.state.aktuelleEigenschaftIndex].eigenschaft
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            logger.error("Sichtpruefung wurde nicht initialisiert")
+            return
+        eigenschaft = self.state.sichtpruefungManager.sichtpruefung.eigenschaftspruefungen[self.state.aktuelleEigenschaftIndex].eigenschaft
+        logger.debug(f"Eigenschaft geladen: {eigenschaft.kategorie} - {eigenschaft.beschreibung[:50]}...")
         self.eigenschaftBilderEinfuegen(eigenschaft)
         self.ui.eigenschaftKategorie.setText(eigenschaft.kategorie)
         self.ui.eigenschaftText.setText(eigenschaft.beschreibung)
 
-    def ladeSichtpruefungZusammenfassung(self):
-        self.ui.zusammenfassungPruefobjektName.setText(self.state.sichtpruefung.pruefanweisung.namePruefobjekt)
+    def ladeSichtpruefungZusammenfassung(self) -> None:
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            logger.error("Sichtpruefung wurde nicht initialisiert")
+            return
+        self.ui.zusammenfassungPruefobjektName.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.namePruefobjekt)
         self.eigenschaftenEinfuegenSeite6()
-        self.ui.zusammenfassungHinweisText.setText(self.state.sichtpruefung.pruefanweisung.hinweis)
+        self.ui.zusammenfassungHinweisText.setText(self.state.sichtpruefungManager.sichtpruefung.pruefanweisung.hinweis)
         self.ui.zusammenfassungSignaturDatumEingeben.setText(datetime.datetime.now().strftime("%d.%m.%Y"))
 
-    def ladePruefanweisungZusammenfassung(self):
-            self.ui.zusammenfassungPruefobjektName_2.setText(self.state.pruefanweisung.namePruefobjekt)
-            self.eigenschaftenEinfuegenSeite12()
+    def ladePruefanweisungZusammenfassung(self) -> None:
+        if self.state.pruefanweisungManager.pruefanweisung is None:
+            logger.error("Pruefanweisung wurde nicht initialisiert")
+            return
+        self.ui.zusammenfassungPruefobjektName_2.setText(self.state.pruefanweisungManager.pruefanweisung.namePruefobjekt)
+        self.eigenschaftenEinfuegenSeite12()
 
-    def eigenschaftBilderEinfuegen(self, eigenschaft: Eigenschaft):
+    def eigenschaftBilderEinfuegen(self, eigenschaft: Eigenschaft) -> None:
         bilder = eigenschaft.bilder
         if bilder:
             # Platzhalter löschen
@@ -205,10 +244,13 @@ class ViewHandler(QObject):
             eigenschaftBildSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
             self.ui.verticalLayout_14.addItem(eigenschaftBildSpacer)
 
-    def eigenschaftenEinfuegenSeite6(self):
+    def eigenschaftenEinfuegenSeite6(self) -> None:
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            logger.error("Sichtpruefung wurde nicht initialisiert")
+            return
         layoutRowIndex = self.zusammenfassungEigenschaftenIndex
         eigenschaftenLayout = self.ui.verticalLayout_10
-        kategorien = eigenschaftspruefungenNachKategorienGruppieren(self.state.sichtpruefung.eigenschaftspruefungen)
+        kategorien = eigenschaftspruefungenNachKategorienGruppieren(self.state.sichtpruefungManager.sichtpruefung.eigenschaftspruefungen)
         for kategorie, eigenschaftspruefungen in kategorien.items():
             # Falls eine neue Kategorie beginnt, erst die Kategoriezeile hinzufügen
             labelKategorie = QLabel(self.ui.scrollAreaWidgetContents)
@@ -289,10 +331,13 @@ class ViewHandler(QObject):
                 eigenschaftenLayout.insertLayout(layoutRowIndex, eigenschaftLayout)
                 layoutRowIndex += 1
         
-    def eigenschaftenEinfuegenSeite12(self):
+    def eigenschaftenEinfuegenSeite12(self) -> None:
+        if self.state.pruefanweisungManager.pruefanweisung is None:
+            logger.error("Pruefanweisung wurde nicht initialisiert")
+            return
         layoutRowIndex = self.zusammenfassungEigenschaftenIndex
         eigenschaftenLayout = self.ui.verticalLayout_17
-        kategorien = eigenschaftenNachKategorienGruppieren(self.state.pruefanweisung.eigenschaften)
+        kategorien = eigenschaftenNachKategorienGruppieren(self.state.pruefanweisungManager.pruefanweisung.eigenschaften)
         for kategorie, eigenschaften in kategorien.items():
             # Falls eine neue Kategorie beginnt, erst die Kategoriezeile hinzufügen
             labelKategorie = QLabel(self.ui.scrollAreaWidgetContents_2)
@@ -373,7 +418,8 @@ class ViewHandler(QObject):
                 eigenschaftenLayout.insertLayout(layoutRowIndex, eigenschaftLayout)
                 layoutRowIndex += 1
 
-    def resetAlleFelder(self):
+    def resetAlleFelder(self) -> None:
+        logger.info("Setze alle Felder zurück")
         for page in Page:
             self.resetAlleFelderAufSeite(page)
         
@@ -383,8 +429,9 @@ class ViewHandler(QObject):
         self.ui.fertig.setEnabled(False)
         self.ui.loeschen.setEnabled(False)
         self.ui.abbrechen.setEnabled(False)
+        logger.debug("Alle Buttons deaktiviert")
 
-    def resetAlleFelderAufSeite(self, page: Page):
+    def resetAlleFelderAufSeite(self, page: Page) -> None:
         widget_types = (QLineEdit, QTextEdit, QPlainTextEdit, QCheckBox, QRadioButton, QComboBox)
         all_widgets = []
 
@@ -454,7 +501,7 @@ class ViewHandler(QObject):
         if page == Page.PRUEFANWEISUNG_ZUSAMMENFASSUNG:
             self.resetEigenschaftenDerZusammenfassung(self.ui.verticalLayout_17)
             
-    def resetEigenschaftenDerZusammenfassung(self, layout: QVBoxLayout):
+    def resetEigenschaftenDerZusammenfassung(self, layout: QVBoxLayout) -> None:
         anzahlZuLoeschendeZeilen = layout.count() - self.zusammenfassungAnzahlZeilen
         letzterIndex = self.zusammenfassungEigenschaftenIndex + anzahlZuLoeschendeZeilen - 1
 

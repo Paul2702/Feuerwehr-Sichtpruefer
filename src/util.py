@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 
-def getUniqueFilename(directory, filename):
+def getUniqueFilename(directory: str, filename: str) -> str:
     base, ext = os.path.splitext(filename)  # Trennt Name und Endung (z.B. "bild", ".jpg")
     counter = 1
     newFilename = filename
@@ -15,7 +15,7 @@ def getUniqueFilename(directory, filename):
     
     return newFilename
 
-def cleanHtml(htmlText: str):
+def cleanHtml(htmlText: str) -> str:
     # Erlaubte HTML-Tags und Attribute für ReportLab
     allowed_tags = ["b", "i", "u", "br", "font"]
     allowed_attrs = {"font": ["color"]}

@@ -1,15 +1,20 @@
+import logging
 from src.gui.pages import Page
 from src.logic.state import AppState
 from ui.ui_main import Ui_MainWindow
 
+logger = logging.getLogger(__name__)
+
 
 class NavigationController:
-    def __init__(self, ui: Ui_MainWindow, state: AppState):
-        self.ui = ui
-        self.state = state
+    def __init__(self, ui: Ui_MainWindow, state: AppState) -> None:
+        self.ui: Ui_MainWindow = ui
+        self.state: AppState = state
         
-    def get_next_page(self):
-        match self.state.get_current_page():
+    def get_next_page(self) -> Page:
+        current_page = self.state.get_current_page()
+        logger.debug(f"Bestimme nächste Seite von: {current_page}")
+        match current_page:
             # case "hauptmenue" wird ausgelassen, weil es keine klare nächste Seite gibt
 
             case Page.SICHTPRUEFUNG_AUSWAHL:
@@ -50,7 +55,7 @@ class NavigationController:
                 return Page.HAUPTMENUE
 
     # TODO noch nicht einsatzbereit wegen erfolgreich abgeschlossen
-    def get_previous_page(self):
+    def get_previous_page(self) -> Page:
         match self.state.get_current_page():
             # case "hauptmenue" wird ausgelassen, weil man nach jeder abheschlossenen oder abgebrochenen Aktion nicht zurückkehren können soll. Wäre etwas merkwürdig wegen den Speichervorgängen
 
@@ -92,17 +97,27 @@ class NavigationController:
                 return Page.PRUEFANWEISUNG_ZUSAMMENFASSUNG
                 return Page.SICHTPRUEFUNG_ZUSAMMENFASSUNG
 
-    def goto(self, page: Page):
+    def goto(self, page: Page) -> None:
+        logger.info(f"Navigiere zu Seite: {page} (Index: {page.value})")
         self.state.set_current_page(page)
         self.ui.content.setCurrentIndex(page.value)
+        logger.debug(f"Seitenwechsel abgeschlossen")
 
     # TODO überprüfen
-    def hatDieSichtpruefungWeitereEigenschaften(self):
-        eigenschaftspruefungen = self.state.sichtpruefung.eigenschaftspruefungen
-        return self.state.aktuelleEigenschaftIndex < len(eigenschaftspruefungen)
+    def hatDieSichtpruefungWeitereEigenschaften(self) -> bool:
+        if self.state.sichtpruefungManager.sichtpruefung is None:
+            return False
+        eigenschaftspruefungen = self.state.sichtpruefungManager.sichtpruefung.eigenschaftspruefungen
+        hat_weitere = self.state.aktuelleEigenschaftIndex < len(eigenschaftspruefungen)
+        logger.debug(f"Sichtprüfung hat weitere Eigenschaften: {hat_weitere} (Index: {self.state.aktuelleEigenschaftIndex}, Gesamt: {len(eigenschaftspruefungen)})")
+        return hat_weitere
 
     # TODO überprüfen
-    def hatDiePruefanweisungWeitereEigenschaften(self):
-        eigenschaften = self.state.pruefanweisung.eigenschaften
-        return self.state.aktuelleEigenschaftIndex < len(eigenschaften)
+    def hatDiePruefanweisungWeitereEigenschaften(self) -> bool:
+        if self.state.pruefanweisungManager.pruefanweisung is None:
+            return False
+        eigenschaften = self.state.pruefanweisungManager.pruefanweisung.eigenschaften
+        hat_weitere = self.state.aktuelleEigenschaftIndex < len(eigenschaften)
+        logger.debug(f"Prüfanweisung hat weitere Eigenschaften: {hat_weitere} (Index: {self.state.aktuelleEigenschaftIndex}, Gesamt: {len(eigenschaften)})")
+        return hat_weitere
     

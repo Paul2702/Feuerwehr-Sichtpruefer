@@ -1,17 +1,21 @@
 
 import html
 import os
+import logging
 import xml.etree.ElementTree as ET
 
 from src.models.pruefanweisung import Pruefanweisung
 from src.models.sichtpruefung import Sichtpruefung
 from src.util import getUniqueFilename
 
+logger = logging.getLogger(__name__)
+
 pruefanweisungenDir = "data/pruefanweisungen"
 pruefanweisungenXmlPfad="data/pruefanweisungen.xml"
 
 
 def speicherePruefanweisungXml(pruefanweisung: Pruefanweisung):
+    logger.info(f"Speichere Prüfanweisung: {pruefanweisung.namePruefobjekt}")
     root = ET.Element("Pruefanweisung")
     ET.SubElement(root, "Name").text = pruefanweisung.namePruefobjekt
     ET.SubElement(root, "VorschauBildPfad").text = pruefanweisung.pfadVorschauBild
@@ -27,6 +31,7 @@ def speicherePruefanweisungXml(pruefanweisung: Pruefanweisung):
     ET.SubElement(root, "PruefablaufText").text = html.escape(pruefanweisung.pruefablaufText)
 
     eigenschaftenElement = ET.SubElement(root, "Eigenschaften")
+    logger.debug(f"Speichere {len(pruefanweisung.eigenschaften)} Eigenschaften")
     for eigenschaft in pruefanweisung.eigenschaften:
         eigenschaftElement = ET.SubElement(eigenschaftenElement, "Eigenschaft")
         ET.SubElement(eigenschaftElement, "Kategorie").text = eigenschaft.kategorie
@@ -44,16 +49,24 @@ def speicherePruefanweisungXml(pruefanweisung: Pruefanweisung):
     fileName = f"{namePruefobjekt}.xml"
     fileName = getUniqueFilename(pruefanweisungenDir, fileName)
     filePath = os.path.join(pruefanweisungenDir, fileName)
-    tree.write(filePath, encoding="utf-8", xml_declaration=True)
-    return filePath
+    
+    try:
+        os.makedirs(pruefanweisungenDir, exist_ok=True)
+        tree.write(filePath, encoding="utf-8", xml_declaration=True)
+        logger.info(f"Prüfanweisung erfolgreich gespeichert: {filePath}")
+        return filePath
+    except Exception as e:
+        logger.error(f"Fehler beim Speichern der Prüfanweisung: {e}", exc_info=True)
+        raise
 
 def ladePruefanweisungXml(xmlPfad):
+    logger.info(f"Lade Prüfanweisung aus XML: {xmlPfad}")
     try:
         with open(xmlPfad, "r", encoding="utf-8") as file:
             xmlInhalt = file.read()
         
         root = ET.fromstring(xmlInhalt)  # XML parsen
-        print(f"XML erfolgreich geladen: {xmlPfad}")
+        logger.debug(f"XML erfolgreich geparst: {xmlPfad}")
 
         sichtpruefung = Sichtpruefung()
 
@@ -78,6 +91,7 @@ def ladePruefanweisungXml(xmlPfad):
         pruefanweisung.pruefablaufHinzufuegen(pruefablaufText)
 
         eigenschaften = root.find("Eigenschaften")
+        eigenschafts_count = 0
         for eigenschaft in eigenschaften.findall("Eigenschaft"):
             kategorie = eigenschaft.find("Kategorie").text
             beschreibung = eigenschaft.find("Beschreibung").text
@@ -90,21 +104,27 @@ def ladePruefanweisungXml(xmlPfad):
                 eigenschaftBilder.append((bildPfad, bildBeschreibung))
 
             sichtpruefung.eigenschaftspruefungHinzufuegen(kategorie, beschreibung, eigenschaftBilder)
+            eigenschafts_count += 1
+            logger.debug(f"Eigenschaft geladen: {kategorie} ({len(eigenschaftBilder)} Bilder)")
             
         hinweis = root.find("Hinweis").text
         pruefanweisung.hinweisHinzufuegen(hinweis)
         sichtpruefung.labelsBefuellen(pruefanweisung)
 
-
+        logger.info(f"Prüfanweisung erfolgreich geladen: {pruefanweisung.namePruefobjekt} ({eigenschafts_count} Eigenschaften)")
         return sichtpruefung
     except Exception as e:
-        print(f"Fehler beim Laden der XML-Datei: {e}")
+        logger.error(f"Fehler beim Laden der XML-Datei: {e}", exc_info=True)
+        raise
 
 def addToPruefanweisungenXml(pruefanweisung: Pruefanweisung, pruefanweisungXmlPfad: str):
+    logger.info(f"Füge Prüfanweisung zur Übersichts-XML hinzu: {pruefanweisung.namePruefobjekt}")
     try:
         tree = ET.parse(pruefanweisungenXmlPfad)
         root = tree.getroot()
+        logger.debug(f"Bestehende Prüfanweisungen-XML geladen: {pruefanweisungenXmlPfad}")
     except FileNotFoundError:
+        logger.info(f"Prüfanweisungen-XML nicht gefunden, erstelle neue Datei: {pruefanweisungenXmlPfad}")
         root = ET.Element("Pruefanweisungen")
         tree = ET.ElementTree(root)
 
@@ -114,24 +134,38 @@ def addToPruefanweisungenXml(pruefanweisung: Pruefanweisung, pruefanweisungXmlPf
     ET.SubElement(pruefanweisungElement, "VorschauBildPfad").text = pruefanweisung.pfadVorschauBild
     ET.SubElement(pruefanweisungElement, "PruefanweisungXmlPfad").text = pruefanweisungXmlPfad
 
-    tree.write(pruefanweisungenXmlPfad, encoding="utf-8", xml_declaration=True)
+    try:
+        tree.write(pruefanweisungenXmlPfad, encoding="utf-8", xml_declaration=True)
+        logger.info(f"Prüfanweisung erfolgreich zur Übersichts-XML hinzugefügt")
+    except Exception as e:
+        logger.error(f"Fehler beim Schreiben der Prüfanweisungen-XML: {e}", exc_info=True)
+        raise
 
 def ladePruefanweisungenXml():
-    tree = ET.parse(pruefanweisungenXmlPfad)
-    root = tree.getroot()
+    logger.info(f"Lade Prüfanweisungen-Übersicht aus: {pruefanweisungenXmlPfad}")
+    try:
+        tree = ET.parse(pruefanweisungenXmlPfad)
+        root = tree.getroot()
 
-    pruefanweisungen = []
-    for pruefanweisung in root.findall("Pruefanweisung"):
-        name = pruefanweisung.find("Name").text
-        vorschau_bild = pruefanweisung.find("VorschauBildPfad").text
-        pfad = pruefanweisung.find("PruefanweisungXmlPfad").text
-        pruefanweisungen.append({
-            "Name": name,
-            "VorschauBildPfad": vorschau_bild,
-            "PruefanweisungXmlPfad": pfad
-        })
+        pruefanweisungen = []
+        for pruefanweisung in root.findall("Pruefanweisung"):
+            name = pruefanweisung.find("Name").text
+            vorschau_bild = pruefanweisung.find("VorschauBildPfad").text
+            pfad = pruefanweisung.find("PruefanweisungXmlPfad").text
+            pruefanweisungen.append({
+                "Name": name,
+                "VorschauBildPfad": vorschau_bild,
+                "PruefanweisungXmlPfad": pfad
+            })
 
-    return pruefanweisungen
+        logger.info(f"{len(pruefanweisungen)} Prüfanweisungen geladen")
+        return pruefanweisungen
+    except FileNotFoundError:
+        logger.warning(f"Prüfanweisungen-XML nicht gefunden: {pruefanweisungenXmlPfad}")
+        return []
+    except Exception as e:
+        logger.error(f"Fehler beim Laden der Prüfanweisungen-XML: {e}", exc_info=True)
+        return []
 
 def eigenschaftenNachKategorienGruppieren(eigenschaften):
     kategorien = {}

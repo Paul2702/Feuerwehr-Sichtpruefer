@@ -23,14 +23,16 @@ class SichtpruefungManager:
         self.sichtpruefung: Optional[Sichtpruefung] = None
         self.pdfPfad: str = ""
 
-        self.speicherbareSeitenInhalte: dict[Page, callable] = {
-            Page.SICHTPRUEFUNG_EIGENSCHAFT: self.speichereSichtpruefungEigenschaft,
-            Page.SICHTPRUEFUNG_ZUSAMMENFASSUNG: self.speichereSichtpruefungZusammenfassung
+        # Store method names to allow tests to monkeypatch instance methods
+        self.speicherbareSeitenInhalte: dict[Page, str] = {
+            Page.SICHTPRUEFUNG_EIGENSCHAFT: "speichereSichtpruefungEigenschaft",
+            Page.SICHTPRUEFUNG_ZUSAMMENFASSUNG: "speichereSichtpruefungZusammenfassung"
         }
     
     def speichereSeiteninhalte(self, page: Page) -> None:
         if page in self.speicherbareSeitenInhalte:
-            self.speicherbareSeitenInhalte[page]()
+            method_name = self.speicherbareSeitenInhalte[page]
+            getattr(self, method_name)()
 
     def speichereSichtpruefungEigenschaft(self) -> None:
         logger.debug(f"Speichere Sichtprüfung-Eigenschaft (Index: {self.app_state.aktuelleEigenschaftIndex})")

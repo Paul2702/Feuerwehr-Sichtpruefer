@@ -121,6 +121,13 @@ class TestPruefanweisungManager:
         # Sollte keine Exception werfen
         pruefanweisung_manager.speichereSeiteninhalte(Page.HAUPTMENUE)
 
+    def test_speichere_pruefanweisung_zusammenfassung_propagates_serializer_error(self, pruefanweisung_manager):
+        """Test: Fehler aus dem Serializer wird weitergereicht"""
+        pruefanweisung_manager.ui.zusammenfassungHinweisEingeben = Mock(toPlainText=Mock(return_value="hinweis"))
+        with patch('src.logic.pruefanweisungManager.speicherePruefanweisungXml', side_effect=RuntimeError('xml failed')):
+            with pytest.raises(RuntimeError, match='xml failed'):
+                pruefanweisung_manager.speicherePruefanweisungZusammenfassung()
+
 
 class TestSichtpruefungManager:
     """Test-Klasse für SichtpruefungManager"""
@@ -209,5 +216,30 @@ class TestSichtpruefungManager:
     def test_speichere_seiteninhalte_unbekannte_seite(self, sichtpruefung_manager):
         """Test: Speichern von unbekannter Seite führt zu keinem Fehler"""
         sichtpruefung_manager.speichereSeiteninhalte(Page.HAUPTMENUE)
+
+    def test_speichere_sichtpruefung_eigenschaft_raises_indexerror_when_no_eigenschaft(self, sichtpruefung_manager):
+        """Test: speichereSichtpruefungEigenschaft wirft IndexError wenn keine Eigenschaft vorhanden ist"""
+        sichtpruefung_manager.sichtpruefung.eigenschaftspruefungen = []
+        sichtpruefung_manager.ui.eigenschaftHandlungsbedarf = Mock(isChecked=Mock(return_value=False))
+        sichtpruefung_manager.ui.eigenschaftMassnahmenEingeben = Mock(text=Mock(return_value='m'))
+        with pytest.raises(IndexError):
+            sichtpruefung_manager.speichereSichtpruefungEigenschaft()
+
+    @patch('src.logic.sichtpruefungManager.PdfGenerator')
+    def test_speichere_sichtpruefung_zusammenfassung_propagates_pdf_error(self, mock_pdf_generator, sichtpruefung_manager):
+        """Test: Fehler beim Erstellen des PDFs wird weitergereicht"""
+        sichtpruefung_manager.pdfPfad = 'test.pdf'
+        mock_pdf_instance = Mock()
+        mock_pdf_instance.erstelle_pdf.side_effect = RuntimeError('pdf error')
+        mock_pdf_generator.return_value = mock_pdf_instance
+        sichtpruefung_manager.ui.zusammenfassungPruefobjektStammdatenLagerortEingeben = Mock(text=Mock(return_value='Lager'))
+        sichtpruefung_manager.ui.zusammenfassungPruefobjektStammdatenNummerEingeben = Mock(text=Mock(return_value='123'))
+        sichtpruefung_manager.ui.zusammenfassungEinsatzbereitJa = Mock(isChecked=Mock(return_value=True))
+        sichtpruefung_manager.ui.zusammenfassungSignaturPrueferEingeben = Mock(text=Mock(return_value='Pruefer'))
+        sichtpruefung_manager.ui.zusammenfassungSignaturDatumEingeben = Mock(text=Mock(return_value='2025-01-01'))
+        sight = sichtpruefung_manager
+        sight.ui.zusammenfassungEinsatzbereitBemerkungenEingeben = Mock(toPlainText=Mock(return_value=''))
+        with pytest.raises(RuntimeError, match='pdf error'):
+            sichtpruefung_manager.speichereSichtpruefungZusammenfassung()
         # Sollte keine Exception werfen
 

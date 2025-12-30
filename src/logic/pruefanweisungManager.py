@@ -23,18 +23,21 @@ class PruefanweisungManager:
         self.app_state: "AppState" = app_state
         self.pruefanweisung: Optional[Pruefanweisung] = None
 
-        self.speicherbareSeitenInhalte: dict[Page, callable] = {
-            Page.PRUEFANWEISUNG_AUSWAHL: self.speicherePruefanweisungAuswahl,
-            Page.PRUEFANWEISUNG_INFOS: self.speicherePruefanweisungInfos,
-            Page.PRUEFANWEISUNG_VORGABEN: self.speicherePruefanweisungVorgaben,
-            Page.PRUEFANWEISUNG_PRUEFABLAUF: self.speicherePruefanweisungPruefablauf,
-            Page.PRUEFANWEISUNG_EIGENSCHAFT: self.speicherePruefanweisungEigenschaft,
-            Page.PRUEFANWEISUNG_ZUSAMMENFASSUNG: self.speicherePruefanweisungZusammenfassung
+        # Store method names so tests can monkeypatch instance methods and
+        # speichereSeiteninhalte will call the current attribute.
+        self.speicherbareSeitenInhalte: dict[Page, str] = {
+            Page.PRUEFANWEISUNG_AUSWAHL: "speicherePruefanweisungAuswahl",
+            Page.PRUEFANWEISUNG_INFOS: "speicherePruefanweisungInfos",
+            Page.PRUEFANWEISUNG_VORGABEN: "speicherePruefanweisungVorgaben",
+            Page.PRUEFANWEISUNG_PRUEFABLAUF: "speicherePruefanweisungPruefablauf",
+            Page.PRUEFANWEISUNG_EIGENSCHAFT: "speicherePruefanweisungEigenschaft",
+            Page.PRUEFANWEISUNG_ZUSAMMENFASSUNG: "speicherePruefanweisungZusammenfassung"
         }
     
     def speichereSeiteninhalte(self, page: Page) -> None:
         if page in self.speicherbareSeitenInhalte:
-            self.speicherbareSeitenInhalte[page]()
+            method_name = self.speicherbareSeitenInhalte[page]
+            getattr(self, method_name)()
         
     def speicherePruefanweisungAuswahl(self) -> None:
         logger.debug("Speichere Prüfanweisung-Auswahl")

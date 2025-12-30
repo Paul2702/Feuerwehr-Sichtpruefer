@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class ValidationController(QObject):
     def __init__(self, mainWindow: QMainWindow, ui: Ui_MainWindow, state: AppState) -> None:
-        super().__init__(mainWindow)  # Parent-Objekt an QObject übergeben
+        super().__init__()
         self.mainWindow: QMainWindow = mainWindow 
         self.ui: Ui_MainWindow = ui
         self.state: AppState = state

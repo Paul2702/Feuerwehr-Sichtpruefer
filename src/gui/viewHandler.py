@@ -1,12 +1,13 @@
 import datetime
 import logging
 from typing import TYPE_CHECKING
-from PySide6.QtWidgets import QLineEdit, QTextEdit, QCheckBox, QRadioButton, QComboBox, QMessageBox, QFileDialog, QVBoxLayout, QPushButton, QLabel, QHBoxLayout, QSizePolicy, QPlainTextEdit, QSpacerItem, QMainWindow
+from PySide6.QtWidgets import QLineEdit, QTextEdit, QCheckBox, QRadioButton, QComboBox, QMessageBox, QLayoutItem, QVBoxLayout, QPushButton, QLabel, QHBoxLayout, QSizePolicy, QPlainTextEdit, QSpacerItem, QMainWindow
 from PySide6.QtGui import QIcon, QCursor, QPixmap
 from PySide6.QtCore import Qt, QObject, QSize, QCoreApplication
 
 from src.gui.navigation import NavigationController
 from src.gui.pages import Page
+from src.logic.vorgang import Vorgang
 from src.logic.serializer import eigenschaftenNachKategorienGruppieren, eigenschaftspruefungenNachKategorienGruppieren, ladePruefanweisungXml, ladePruefanweisungenXml
 from src.logic.state import AppState
 from src.models.eigenschaft import Eigenschaft
@@ -22,6 +23,7 @@ class ViewHandler(QObject):
         self.navigator: NavigationController = navigator
         self.ui: Ui_MainWindow = ui
         self.state: AppState = state
+        self.mainWindow: QMainWindow = mainWindow
 
         super().__init__(mainWindow)
         self.imageNotFoundPath: str = "assets/icons/Image not found"
@@ -55,11 +57,31 @@ class ViewHandler(QObject):
         self.ladePruefanweisungenInAuswahl(auswahl)
 
     def ladePruefanweisungenInAuswahl(self, auswahl) -> None:
-        # Erst alle alten Widgets aus dem Layout entfernen
-        while self.ui.gridLayout.count():
-            item = self.ui.gridLayout.takeAt(0)
-            if item.widget():
-                item.widget().deleteLater()
+        # Erst alle alten Widgets/Layout-Elemente aus dem Layout entfernen (rekursiv)
+        def _clear_layout(layout):
+            while layout.count():
+                item = layout.takeAt(0)
+                if item is None:
+                    continue
+                w = item.widget()
+                l = item.layout()
+                if w is not None:
+                    try:
+                        w.setParent(None)
+                    except Exception:
+                        pass
+                    w.deleteLater()
+                elif l is not None:
+                    _clear_layout(l)
+                    try:
+                        layout.removeItem(item)
+                    except Exception:
+                        pass
+                else:
+                    # spacer or unknown item; nothing to delete
+                    pass
+
+        _clear_layout(self.ui.gridLayout)
 
         columns = 3  # Anzahl der Spalten
         for index, pruefanweisung in enumerate(auswahl):
@@ -81,7 +103,11 @@ class ViewHandler(QObject):
             verticalLayoutImage.setIcon(icon)
             verticalLayoutImage.setIconSize(QSize(371, 371))
             verticalLayoutImage.setProperty("xmlPfad", pruefanweisung["PruefanweisungXmlPfad"])
-            verticalLayoutImage.clicked.connect(self.ladePruefanweisung)
+            # Connect click handler depending on current Vorgang (normal load or delete)
+            if getattr(self.state, 'aktuellerVorgang', None) == Vorgang.PRUEFANWEISUNG_LOESCHEN:
+                verticalLayoutImage.clicked.connect(self.bestatigeUndLoeschePruefanweisung)
+            else:
+                verticalLayoutImage.clicked.connect(self.ladePruefanweisung)
             verticalLayout.addWidget(verticalLayoutImage)
 
             # Anklickbaren Namen erstellen
@@ -163,6 +189,70 @@ class ViewHandler(QObject):
                 logger.error("Fehler: Kein XML-Pfad gefunden!")
         else:
             logger.warning("LadePruefanweisung aufgerufen, aber kein Sender-Button gefunden")
+
+    def bestatigeUndLoeschePruefanweisung(self) -> None:
+        """Called when in delete mode: ask for confirmation and delete the selected pruefanweisung."""
+        button = self.sender()
+        if not button:
+            logger.warning("bestatigeUndLoeschePruefanweisung aufgerufen, aber kein Sender")
+            return
+        xmlPfad = button.property('xmlPfad')
+        if not xmlPfad:
+            logger.error("Kein XML-Pfad für zu löschende Prüfanweisung gefunden")
+            return
+
+        # Try to extract the name to show in dialog
+        name_text = None
+        try:
+            import xml.etree.ElementTree as ET
+            root = ET.parse(xmlPfad).getroot()
+            name_el = root.find('Name')
+            if name_el is not None and name_el.text:
+                name_text = name_el.text
+        except Exception:
+            logger.debug("Konnte Namen der Prüfanweisung für Dialog nicht ermitteln")
+
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Prüfanweisung löschen")
+        if name_text:
+            msg.setText(f"Möchtest du die Prüfanweisung '{name_text}' und alle zugehörigen Bilder endgültig löschen?")
+        else:
+            msg.setText("Möchtest du die ausgewählte Prüfanweisung und alle zugehörigen Bilder endgültig löschen?")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.setDefaultButton(QMessageBox.No)
+
+        antwort = msg.exec()
+        if antwort == QMessageBox.Yes:
+            try:
+                from src.logic.serializer import loeschePruefanweisung
+                geloeschte = loeschePruefanweisung(xmlPfad)
+                logger.info(f"Prüfanweisung gelöscht, {len(geloeschte)} Dateien entfernt")
+                # refresh the selection view
+                self.ladeSichtpruefungAuswahl()
+                # Use main window helper to show status messages
+                try:
+                    if hasattr(self.mainWindow, 'statusBarMeldung'):
+                        self.mainWindow.statusBarMeldung("Prüfanweisung gelöscht")
+                    else:
+                        # fallback to UI statusbar widget
+                        if hasattr(self.ui, 'statusbar') and hasattr(self.ui.statusbar, 'showMessage'):
+                            self.ui.statusbar.showMessage("Prüfanweisung gelöscht", 3000)
+                except Exception:
+                    logger.exception("Fehler beim Anzeigen der Statusmeldung nach Löschen")
+            except Exception as e:
+                logger.error(f"Fehler beim Löschen der Prüfanweisung: {e}", exc_info=True)
+                try:
+                    if hasattr(self.mainWindow, 'statusBarMeldung'):
+                        self.mainWindow.statusBarMeldung("Fehler beim Löschen der Prüfanweisung")
+                    else:
+                        if hasattr(self.ui, 'statusbar') and hasattr(self.ui.statusbar, 'showMessage'):
+                            self.ui.statusbar.showMessage("Fehler beim Löschen der Prüfanweisung", 3000)
+                except Exception:
+                    logger.exception("Fehler beim Anzeigen der Fehlermeldung nach Löschfehler")
+        else:
+            logger.debug("Löschen abgebrochen durch Benutzer")
+        
 
     def ladeSichtpruefungVorgaben(self) -> None:
         if self.state.sichtpruefungManager.sichtpruefung is None:
@@ -520,3 +610,54 @@ class ViewHandler(QObject):
                 layout.removeItem(sub_layout)  # Das leere Layout entfernen
 
             layout.removeItem(item)  # Schließlich das Haupt-Item aus dem Layout entfernen
+
+    def fuellePruefanweisungEigenschaft(self, eigenschaft: Eigenschaft) -> None:
+        """Füllt die Eingabefelder auf der Page PRUEFANWEISUNG_EIGENSCHAFT mit den
+        Daten einer `Eigenschaft`-Instanz (Kategorie, Beschreibung, Bilder).
+        """
+        # Kategorie / Beschreibung füllen
+        try:
+            if hasattr(self.ui, 'eigenschaftEditorKategorieEingeben'):
+                self.ui.eigenschaftEditorKategorieEingeben.setText(eigenschaft.kategorie)
+            if hasattr(self.ui, 'eigenschaftEditorEigenschafteingeben'):
+                self.ui.eigenschaftEditorEigenschafteingeben.setText(eigenschaft.beschreibung)
+        except Exception:
+            logger.exception("Fehler beim Setzen der Eigenschafts-Felder")
+
+        # Bilderbereich zuerst aufräumen
+        while self.ui.verticalLayout_11.count() > 0:
+            item = self.ui.verticalLayout_11.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+        # Füge für jedes Bild ein Widget-Paar Bild + Beschreibung ein
+        for bildPfad, bildBeschreibung in eigenschaft.bilder:
+            # Bild-Label
+            eigenschaftBild = QLabel(self.ui.bildEditor)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+            sizePolicy.setHorizontalStretch(0)
+            sizePolicy.setVerticalStretch(0)
+            eigenschaftBild.setSizePolicy(sizePolicy)
+            eigenschaftBild.setMinimumSize(QSize(0, 0))
+            try:
+                pixmap = QPixmap(bildPfad)
+                scaledPixmap = pixmap.scaled(540, pixmap.height() * (540 / pixmap.width()), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                eigenschaftBild.setPixmap(scaledPixmap)
+            except Exception:
+                logger.exception(f"Bild konnte nicht geladen werden: {bildPfad}")
+            eigenschaftBild.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            eigenschaftBild.setProperty('isPlaceholder', False)
+            eigenschaftBild.setProperty('imagePath', bildPfad)
+            self.ui.verticalLayout_11.addWidget(eigenschaftBild)
+
+            # Beschreibungsfeld
+            eigenschaftBildBeschreibungEingeben = QPlainTextEdit(self.ui.bildEditor)
+            eigenschaftBildBeschreibungEingeben.setMinimumSize(QSize(0, 0))
+            eigenschaftBildBeschreibungEingeben.setMaximumSize(QSize(540, 78))
+            eigenschaftBildBeschreibungEingeben.setPlaceholderText("Bildbeschreibung eingeben...")
+            eigenschaftBildBeschreibungEingeben.setPlainText(bildBeschreibung or '')
+            self.ui.verticalLayout_11.addWidget(eigenschaftBildBeschreibungEingeben)
+
+        # Spacer am Ende
+        bildEditorSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.ui.verticalLayout_11.addItem(bildEditorSpacer)

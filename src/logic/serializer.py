@@ -167,6 +167,81 @@ def ladePruefanweisungenXml():
         logger.error(f"Fehler beim Laden der Prüfanweisungen-XML: {e}", exc_info=True)
         return []
 
+
+def loeschePruefanweisung(xmlPfad: str) -> list[str]:
+    """Löscht eine Prüfanweisung-XML sowie assoziierte Bilder und entfernt den Eintrag
+    aus der Übersichts-XML. Gibt die Liste der gelöschten Dateipfade zurück.
+    """
+    logger.info(f"Lösche Prüfanweisung: {xmlPfad}")
+    geloeschte_dateien: list[str] = []
+    try:
+        # Parse die Prüfanweisung XML, sammle Bildpfade
+        try:
+            tree = ET.parse(xmlPfad)
+            root = tree.getroot()
+        except Exception:
+            logger.warning(f"Prüfanweisung-XML konnte nicht geparst werden: {xmlPfad}")
+            root = None
+
+        if root is not None:
+            vorschau = root.find('VorschauBildPfad')
+            if vorschau is not None and vorschau.text:
+                geloeschte_dateien.append(vorschau.text)
+
+            eigenschaften = root.find('Eigenschaften')
+            if eigenschaften is not None:
+                for eigenschaft in eigenschaften.findall('Eigenschaft'):
+                    bilder = eigenschaft.find('Bilder')
+                    if bilder is not None:
+                        for bild in bilder.findall('Bild'):
+                            bildPfad = bild.find('BildPfad')
+                            if bildPfad is not None and bildPfad.text:
+                                geloeschte_dateien.append(bildPfad.text)
+
+        # Entfernen der XML-Datei der Prüfanweisung
+        try:
+            if os.path.exists(xmlPfad):
+                os.remove(xmlPfad)
+                logger.info(f"Prüfanweisung-XML gelöscht: {xmlPfad}")
+        except Exception as e:
+            logger.error(f"Fehler beim Löschen der Prüfanweisung-XML: {e}", exc_info=True)
+            raise
+
+        # Entfernen des Eintrags aus der Übersichts-XML
+        try:
+            tree = ET.parse(pruefanweisungenXmlPfad)
+            root = tree.getroot()
+            removed = False
+            for pruefanweisung in root.findall('Pruefanweisung'):
+                pruefanweisungXmlPfad = pruefanweisung.find('PruefanweisungXmlPfad')
+                if pruefanweisungXmlPfad is not None and pruefanweisungXmlPfad.text == xmlPfad:
+                    root.remove(pruefanweisung)
+                    removed = True
+                    break
+            if removed:
+                tree.write(pruefanweisungenXmlPfad, encoding='utf-8', xml_declaration=True)
+                logger.info(f"Eintrag aus {pruefanweisungenXmlPfad} entfernt: {xmlPfad}")
+        except FileNotFoundError:
+            logger.warning(f"Übersichts-XML nicht gefunden beim Löschen: {pruefanweisungenXmlPfad}")
+        except Exception as e:
+            logger.error(f"Fehler beim Entfernen des Eintrags aus Übersichts-XML: {e}", exc_info=True)
+            raise
+
+        # Lösche die Bilddateien (falls vorhanden). Fehler beim Löschen einzelner Dateien werden geloggt,
+        # aber nicht den gesamten Vorgang abbrechen.
+        for datei in geloeschte_dateien:
+            try:
+                if datei and os.path.exists(datei):
+                    os.remove(datei)
+                    logger.info(f"Bild gelöscht: {datei}")
+            except Exception as e:
+                logger.error(f"Fehler beim Löschen der Bilddatei {datei}: {e}", exc_info=True)
+
+        return geloeschte_dateien
+    except Exception:
+        logger.error("Fehler beim Löschen der Prüfanweisung", exc_info=True)
+        raise
+
 def eigenschaftenNachKategorienGruppieren(eigenschaften):
     kategorien = {}
     for eigenschaft in eigenschaften:

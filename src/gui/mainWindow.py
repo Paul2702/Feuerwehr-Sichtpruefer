@@ -9,6 +9,7 @@ from PySide6.QtCore import Qt, QSize, QCoreApplication
 from src.gui.navigation import NavigationController
 from src.gui.pages import Page
 from src.gui.viewHandler import ViewHandler
+from src.logic.pruefanweisungManager import PruefanweisungManager
 from src.logic.state import AppState
 from src.logic.vorgang import Vorgang
 from src.logic.validators import ValidationController
@@ -171,8 +172,12 @@ class MainWindow(QMainWindow):
         # TODO
 
     def deletePruefanweisung(self):
-        logger.warning("Prüfanweisung löschen aufgerufen, aber noch nicht implementiert")
-        # TODO
+        logger.info("Prüfanweisung löschen aufgerufen: wechsle in Löschmodus")
+        self.state.aktuellerVorgang = Vorgang.PRUEFANWEISUNG_LOESCHEN
+        self.ui.abbrechen.setEnabled(True)
+        # Load the Auswahl page (reuses same UI but click will trigger delete flow)
+        self.view_handler.ladeSeiteninhalte(Page.SICHTPRUEFUNG_AUSWAHL)
+        self.navigator.goto(Page.SICHTPRUEFUNG_AUSWAHL)
 
     # Sichtprüfung Auswahl
     def auswahlVorbereiten(self):
@@ -215,10 +220,47 @@ class MainWindow(QMainWindow):
         
     def loeschenPruefanweisungEigenschaft(self):
         logger.info(f"Lösche Prüfanweisung-Eigenschaft (Index: {self.state.aktuelleEigenschaftIndex})")
-        self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
-        if self.state.aktuelleEigenschaftIndex > 0:
-            self.state.aktuelleEigenschaftIndex -= 1
-            logger.debug(f"Eigenschaftsindex reduziert auf: {self.state.aktuelleEigenschaftIndex}")
+        pruefanweisungManager: PruefanweisungManager = getattr(self.state, 'pruefanweisungManager', None)
+        if not pruefanweisungManager or not getattr(pruefanweisungManager, 'pruefanweisung', None):
+            # Kein Modell vorhanden: einfach Felder leeren
+            self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            self.state.aktuelleEigenschaftIndex = 0
+            return
+
+        current = int(self.state.aktuelleEigenschaftIndex)
+        eigenschaften = pruefanweisungManager.pruefanweisung.eigenschaften
+        total = len(eigenschaften)
+
+        # Fall 1: aktuelle Felder sind ungespeichert (Index == total)
+        if current >= total:
+            # Nur UI zurücksetzen (Bilder entfernen, Felder leeren)
+            self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            # Index bleibt auf next-free
+            self.state.aktuelleEigenschaftIndex = total
+            return
+
+        # Fall 2: Lösche die gespeicherte Eigenschaft an der Position 'current'
+        try:
+            removed = eigenschaften.pop(current)
+            logger.debug(f"Eigenschaft an Index {current} entfernt: {removed}")
+        except Exception as e:
+            logger.error(f"Fehler beim Entfernen der Eigenschaft aus Modell: {e}", exc_info=True)
+            # Fallback: UI zurücksetzen
+            self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            return
+
+        # Nach dem Entfernen: falls eine Eigenschaft an der gleichen Position existiert, lade sie
+        if current < len(eigenschaften):
+            nächste = eigenschaften[current]
+            # UI leeren und dann mit den nächsten Daten füllen
+            self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            self.view_handler.fuellePruefanweisungEigenschaft(nächste)
+            # aktuelleEigenschaftIndex bleibt auf current
+            self.state.aktuelleEigenschaftIndex = current
+        else:
+            # Keine folgende Eigenschaft: Felder leeren und Index auf next-free setzen
+            self.view_handler.resetAlleFelderAufSeite(Page.PRUEFANWEISUNG_EIGENSCHAFT)
+            self.state.aktuelleEigenschaftIndex = len(eigenschaften)
     
     def bildEinfuegenPruefanweisungEigenschaft(self):
         logger.info("Bild für Prüfanweisung-Eigenschaft wird eingefügt")
